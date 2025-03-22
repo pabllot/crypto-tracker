@@ -1,10 +1,7 @@
 import ChildComponent from "./components/ChildComponent";
 import CryptoTable from "./components/CryptoTable";
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}` // ✅ Use Vercel URL in production
-  : "http://localhost:3000"; // ✅ Fallback to localhost for local development
-
+const baseUrl = 'https://crypto-tracker-g3zitv6s1-pabllots-projects.vercel.app/'
 
 export default async function Page() {
   const [top10Res, allRes] = await Promise.all([
