@@ -10,9 +10,8 @@ export default function CryptoTable({ initialTop10, initialAll }: { initialTop10
   const [localSearchTerm, setLocalSearchTerm] = useState("");
   const [cryptoType, setCryptoType] = useState<"top10" | "all">("top10");
 
-  // Pagination State
   const [page, setPage] = useState(0);
-  const pageSize = 10; // Number of items per page
+  const pageSize = 10;
 
   const data = useMemo(() => (cryptoType === "top10" ? initialTop10 : initialAll), [cryptoType, initialTop10, initialAll]);
 
@@ -23,16 +22,15 @@ export default function CryptoTable({ initialTop10, initialAll }: { initialTop10
   };
 
   const handleToggle = () => {
-    const startTime = performance.now(); // Start time
+    const startTime = performance.now();
 
     setCryptoType((prev) => {
       const newType = prev === "top10" ? "all" : "top10";
 
-      // Reset pagination to the first page when switching lists
       setPage(0);
 
       requestAnimationFrame(() => {
-        const endTime = performance.now(); // End time
+        const endTime = performance.now();
         console.log(`🔄 Switch to "${newType}" took ${(endTime - startTime).toFixed(2)}ms`);
       });
 
@@ -42,13 +40,21 @@ export default function CryptoTable({ initialTop10, initialAll }: { initialTop10
 
   const filteredData = useMemo(() => {
     if (!searchTerm) return data;
-    return data?.filter((crypto) =>
+
+    const startTime = performance.now();
+
+    const filteredData = data?.filter((crypto) =>
       crypto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       crypto.symbol.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const endTime = performance.now();
+
+    console.log(`🔍 Search took ${(endTime - startTime).toFixed(2)}ms`);
+
+    return filteredData;
   }, [data, searchTerm]);
 
-  // Pagination Logic
   const paginatedData = useMemo(() => {
     return filteredData.slice(page * pageSize, (page + 1) * pageSize);
   }, [filteredData, page]);
@@ -62,7 +68,7 @@ export default function CryptoTable({ initialTop10, initialAll }: { initialTop10
   ], []);
 
   const table = useReactTable({
-    data: paginatedData, // Now using paginated data
+    data: paginatedData,
     columns,
     state: { globalFilter: searchTerm },
     getCoreRowModel: getCoreRowModel(),
@@ -120,7 +126,6 @@ export default function CryptoTable({ initialTop10, initialAll }: { initialTop10
         </tbody>
       </table>
 
-      {/* Pagination Controls */}
       <div className="flex justify-center gap-2 mt-4">
         <button
           disabled={page === 0}
