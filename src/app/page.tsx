@@ -1,3 +1,4 @@
+import ChildComponent from "./components/ChildComponent";
 import CryptoTable from "./components/CryptoTable";
 
 export default async function Page() {
@@ -8,5 +9,7 @@ export default async function Page() {
 
   const [top10Data, allData] = await Promise.all([top10Res.json(), allRes.json()]);
 
-  return <CryptoTable initialTop10={top10Data} initialAll={allData} />;
+  return <CryptoTable initialTop10={top10Data} initialAll={allData}>
+    <ChildComponent />
+  </CryptoTable>;
 }

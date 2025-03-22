@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import useCryptoStore from "../../../store/useCryptoStore";
 import type { CryptoData } from "../types/CryptoTable";
 
-export default function CryptoTable({ initialTop10, initialAll }: { initialTop10: CryptoData[], initialAll: CryptoData[] }) {
+export default function CryptoTable({ initialTop10, initialAll, children }: { initialTop10: CryptoData[], initialAll: CryptoData[], children: React.ReactNode }) {
   const { searchTerm, setSearchTerm } = useCryptoStore();
   const [localSearchTerm, setLocalSearchTerm] = useState("");
   const [cryptoType, setCryptoType] = useState<"top10" | "all">("top10");
@@ -142,6 +142,7 @@ export default function CryptoTable({ initialTop10, initialAll }: { initialTop10
           </button>
         </div>
       }
+      {children}
     </div>
   );
 }
