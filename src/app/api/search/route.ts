@@ -40,7 +40,10 @@ export async function GET(req: Request) {
 
     const marketData = await marketRes.json();
 
-    return NextResponse.json(marketData);
+    const respose = Response.json(marketData);
+    respose.headers.set("Access-Control-Allow-Origin", "*"); // Allow all origins
+    respose.headers.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+    return respose;
   } catch (error) {
     console.error("❌ API Fetch Error:", error);
     return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });

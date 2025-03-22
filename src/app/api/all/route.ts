@@ -12,8 +12,11 @@ export async function GET() {
     }
 
     const data = await res.json();
-    return Response.json(data);
-  } catch (error) {
+    const respose = Response.json(data);
+    respose.headers.set("Access-Control-Allow-Origin", "*"); // Allow all origins
+    respose.headers.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+    return respose;
+    } catch (error) {
     console.error("API Error:", error);
     return new Response(JSON.stringify({ error: "Failed to fetch data" }), { status: 500 });
   }
