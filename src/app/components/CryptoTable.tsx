@@ -85,24 +85,21 @@ export default function CryptoTable({ initialTop10, initialAll }: { initialTop10
           onChange={(e) => setLocalSearchTerm(e.target.value)}
           className="border p-2 rounded w-full"
         />
-        <button onClick={handleSearch} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        <button onClick={handleSearch} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer">
           Search
         </button>
-        <button onClick={handleRemoveSearch} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+        <button onClick={handleRemoveSearch} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 cursor-pointer">
           Clear
         </button>
-        <button onClick={handleToggle} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+        <button onClick={handleToggle} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 cursor-pointer">
           {cryptoType === "top10" ? "Show All Cryptos" : "Show Top 10"}
         </button>
       </div>
-      <h1 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-        {cryptoType !== "top10" ? "All Cryptos" : "Top 10"}
-      </h1>
 
       <table className="min-w-full border-collapse border border-gray-300">
         <thead>
           {table.getHeaderGroups().map(headerGroup => (
-            <tr key={headerGroup.id} className="bg-gray-200">
+            <tr key={headerGroup.id} className="bg-gray-500">
               {headerGroup.headers.map(header => (
                 <th key={header.id} onClick={header.column.getToggleSortingHandler()} className="border border-gray-400 p-2 cursor-pointer">
                   {flexRender(header.column.columnDef.header, header.getContext())}
@@ -126,23 +123,25 @@ export default function CryptoTable({ initialTop10, initialAll }: { initialTop10
         </tbody>
       </table>
 
-      <div className="flex justify-center gap-2 mt-4">
-        <button
-          disabled={page === 0}
-          onClick={() => setPage(page - 1)}
-          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 disabled:opacity-50"
-        >
-          Previous
-        </button>
-        <span>Page {page + 1} of {Math.ceil(filteredData.length / pageSize)}</span>
-        <button
-          disabled={(page + 1) * pageSize >= filteredData.length}
-          onClick={() => setPage(page + 1)}
-          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 disabled:opacity-50"
-        >
-          Next
-        </button>
-      </div>
+      {filteredData.length > pageSize &&
+        <div className="flex justify-center gap-2 mt-4">
+          <button
+            disabled={page === 0}
+            onClick={() => setPage(page - 1)}
+            className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600 disabled:opacity-50 cursor-pointer"
+          >
+            Previous
+          </button>
+          <span>Page {page + 1} of {Math.ceil(filteredData.length / pageSize)}</span>
+          <button
+            disabled={(page + 1) * pageSize >= filteredData.length}
+            onClick={() => setPage(page + 1)}
+            className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600 disabled:opacity-50 cursor-pointer"
+          >
+            Next
+          </button>
+        </div>
+      }
     </div>
   );
 }
