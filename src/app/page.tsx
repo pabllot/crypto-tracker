@@ -16,4 +16,3 @@ export default async function Page() {
   </CryptoTable>;
 }
 
-export const dynamic = "force-dynamic";
