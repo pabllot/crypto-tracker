@@ -16,6 +16,7 @@ export default function CryptoTable({ initialTop10, initialAll, children }: { in
   const data = useMemo(() => (cryptoType === "top10" ? initialTop10 : initialAll), [cryptoType, initialTop10, initialAll]);
 
   const handleSearch = () => setSearchTerm(localSearchTerm.trim());
+
   const handleRemoveSearch = () => {
     setSearchTerm('');
     setLocalSearchTerm('');
@@ -48,15 +49,16 @@ export default function CryptoTable({ initialTop10, initialAll, children }: { in
       crypto.symbol.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    setPage(0)
+
     const endTime = performance.now();
 
     console.log(`🔍 Search took ${(endTime - startTime).toFixed(2)}ms`);
-
     return filteredData;
   }, [data, searchTerm]);
 
   const paginatedData = useMemo(() => {
-    return filteredData.slice(page * pageSize, (page + 1) * pageSize);
+    return filteredData?.slice(page * pageSize, (page + 1) * pageSize);
   }, [filteredData, page]);
 
   const columns: ColumnDef<CryptoData>[] = useMemo(() => [
@@ -112,7 +114,7 @@ export default function CryptoTable({ initialTop10, initialAll, children }: { in
 
         <tbody>
           {table.getRowModel().rows.map(row => (
-            <tr key={row.id} className="hover:bg-gray-100">
+            <tr key={row.id} className="hover:bg-gray-600">
               {row.getVisibleCells().map(cell => (
                 <td key={cell.id} className="border border-gray-400 p-2">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -146,3 +148,22 @@ export default function CryptoTable({ initialTop10, initialAll, children }: { in
     </div>
   );
 }
+
+
+// const fetchCryptos = async (query: string) => {
+//   const res = await fetch(`/api/search?q=${query}`);
+//   return res.json();
+// };
+
+// const { data: searchResults } = useQuery<CryptoData[]>({
+//   queryKey: ["search", searchTerm],
+//   queryFn: () => fetchCryptos(searchTerm),
+//   enabled: Boolean(searchTerm),
+//   staleTime: 60000 // 60 seconds
+// });
+
+
+// const data = useMemo(() => {
+//   if (searchTerm && searchResults) return searchResults;
+//   return cryptoType === "top10" ? initialTop10 : initialAll;
+// }, [cryptoType, initialTop10, initialAll, searchResults, searchTerm])
